@@ -14,3 +14,4 @@ export {
   assertNotEquals,
   assertThrowsAsync,
 } from "https://deno.land/std@0.92.0/testing/asserts.ts";
+export { hmac } from "https://deno.land/x/hmac@v2.0.1/mod.ts";

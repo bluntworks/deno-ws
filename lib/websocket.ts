@@ -10,7 +10,7 @@ import {
 } from "./../deps.ts";
 
 import { WebSocketError } from "./errors.ts";
-import { getHmac } from './hmac.ts'
+import { getHmac } from '../lib/get-hmac.ts'
 
 export enum WebSocketState {
   CONNECTING = 0,
