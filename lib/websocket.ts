@@ -37,6 +37,7 @@ export class GenericEventEmitter<EventTypes extends EventTypesMap> extends Event
   emit (...params: Parameters<EventEmitter["emit"]>): boolean { return super.emit(...params) }
   clientID?: string;
   hmac?:string;
+  deviceID?:string
   headers?:Headers
 }
 
@@ -76,8 +77,9 @@ export class WebSocketServer extends GenericEventEmitter<DefaultServerEventTypes
         }
         const ws: WebSocketAcceptedClient = new WebSocketAcceptedClient(sock);
         ws.headers = headers
+        ws.deviceID = parseDevID(req.url)
         this.clients.add(ws);
-        this.clientMap.set(ws.clientID, ws)
+        this.clientMap.set(ws.deviceID, ws)
         this.emit("connection", ws, req.url);
       } catch (err) {
         this.emit("error", err);
@@ -90,6 +92,12 @@ export class WebSocketServer extends GenericEventEmitter<DefaultServerEventTypes
     this.clients.clear();
     this.clientMap.clear()
   }
+}
+
+function parseDevID(url) {
+  const uuid = url.split('?')[1]
+  const devID = uuid && uuid.split('=')[1]
+  return devID
 }
 
 export type DefaultClientEventTypes<AllowedMessageEventContent> = {
